@@ -25,7 +25,7 @@
 
 #### demo页面
 
-![litellm_cost](./pics/litellm_cost.png)
+![litellm_cost](https://cdn.jsdelivr.net/gh/w666x/image/git//litellm_cost.png)
 
 
 
@@ -138,7 +138,7 @@ curl -X GET "http://$LLM_HOST:9982/model/info" -H "accept: application/json" -H 
 ```
 
 
-![模型管理清单](./pics/litellm_modellist.png)
+![模型管理清单](https://cdn.jsdelivr.net/gh/w666x/image/git//litellm_modellist.png)
 
 
 
@@ -146,8 +146,8 @@ curl -X GET "http://$LLM_HOST:9982/model/info" -H "accept: application/json" -H 
     - 主要包括两部分内容，虚拟key的管理以及测试功能
 
 
-![litellm_keylist](./pics/litellm_keylist.png)
-![litellm_keytest](./pics/litellm_keytest.png)
+![litellm_keylist](https://cdn.jsdelivr.net/gh/w666x/image/git//litellm_keylist.png)
+![litellm_keytest](https://cdn.jsdelivr.net/gh/w666x/image/git//litellm_keytest.png)
 
 
 
@@ -205,7 +205,7 @@ curl -X 'POST' http://$LLM_HOST:9982/v1/rerank \
 ```
 
 
-![key请求测试](./pics/litellm-key-test.png)
+![key请求测试](https://cdn.jsdelivr.net/gh/w666x/image/git//litellm-key-test.png)
 
 
 - 2. psql
