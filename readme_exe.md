@@ -42,7 +42,7 @@ docker compose -f docker-litellm.yml down -v
 
 
 - 2. 新增配置文件
-    - 本文所有的模型都是基于xinference起的，包括llm/embedding/rerank模型
+    - 本文所有的模型都是基于xinference起的，包括llm/embedding/模型
     - 关于xinference的使用方法，可参考【xinference】
     - 1）对于model, 当前litellm关于xinference仅支持embedding，所以对于llm模型，xinference如果是vllm方式起的，增加个 **hosted_vllm** 即可
     - 2）对于litellm_credential_name，可以设置vllm或者其他模型的api-key/api-host信息
@@ -103,6 +103,7 @@ litellm_settings:
 - 3. 模型管理
     - LLM_API_KEY为通过litellm设置的虚拟key
     - LLM_HOST作为litellm对应的节点
+    - **api_base尽量不要传参，写详细地址即可**
 
 ```sh
 export LLM_API_KEY="sk-master-key"
@@ -112,8 +113,8 @@ curl -X POST "http://$LLM_HOST:9982/model/new" \
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $LLM_API_KEY"  \
-    -d '{ "model_name": "qwen3-32b-test", 
-          "litellm_params": {"model": "host_vllm/qwen3-32b", 
+    -d '{ "model_name": "qwen3-32b", 
+          "litellm_params": {"model": "hosted_vllm/qwen3-32b", 
                              "api_key": "os.environ/AZURE_API_KEY",
                              "api_base": "http://$LLM_HOST:9999/v1",
                              "input_cost_per_token": "0.00004",
@@ -126,11 +127,11 @@ curl -X POST "http://$LLM_HOST:9982/model/new" \
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $LLM_API_KEY"  \
-    -d '{ "model_name": "bge-reranker-large", 
-          "litellm_params": {"model": "cohere/bge-reranker-large", 
+    -d '{ "model_name": "bge-m3", 
+          "litellm_params": {"model": "xinference/bge-m3", 
                              "api_key": "os.environ/AZURE_API_KEY",
                              "api_base": "http://$LLM_HOST:9999/v1"}, 
-          "model_info":{"mode":"rerank"}}'
+          "model_info":{"mode":"embedding"}}'
 
 # 查看模型清单
 curl -X GET "http://$LLM_HOST:9982/model/info" -H "accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer $LLM_API_KEY" 
@@ -162,7 +163,7 @@ curl  http://$LLM_HOST:9982/v1/chat/completions \
 -H "Content-Type: application/json"  \
 -H "Authorization: Bearer $LLM_API_KEY"  \
   -d '{
-"model": "Qwen3-30B-A3B-Instruct-2507",
+"model": "qwen3-32b",
 "stream": false,
 "messages": [
 {"role": "user", "content": "Give me a short introduction to large language models."}
@@ -251,17 +252,17 @@ litellm-proxy-extras==0.2.18
 name: litellm
 services:
   litellm:
-    image: ghcr.io/berriai/litellm:main-latest # 或者选用 stable
+    image: ghcr.io/berriai/litellm:main-latest
     volumes:
      - ./config.yaml:/app/config.yaml
      - /etc/localtime:/etc/localtime
     command:
      - "--config=/app/config.yaml/config.yaml"
     ports:
-      - "9982:4000" # Map the container port to the host, change the host port if necessary
+      - "9982:4000"
     environment:
         DATABASE_URL: "postgresql://llmproxy:passwd@db:5432/litellm"
-        STORE_MODEL_IN_DB: "True" # allows adding models to proxy via UI
+        STORE_MODEL_IN_DB: "True"
         VLLM_API_KEY: $VLLM_API_KEY
   db:
     image: postgres

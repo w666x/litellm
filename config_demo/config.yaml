@@ -1,0 +1,56 @@
+model_list:
+  - model_name: Qwen3-30B-A3B-Instruct-2507
+    litellm_params:
+      model: hosted_vllm/Qwen3-30B-A3B-Instruct-2507
+      litellm_credential_name: default_vllm_credential
+      rpm: 6000
+      input_cost_per_token: 0.00004
+      output_cost_per_token: 0.00012
+  - model_name: qwen3-32b
+    litellm_params:
+      model: hosted_vllm/qwen3-32b
+      litellm_credential_name: default_vllm_credential
+      input_cost_per_token: 0.00004
+      output_cost_per_token: 0.00012
+    model_info:
+      mode: chat
+  - model_name: stella-mrl-large-zh-v3.5-1792d
+    model_info:
+      mode: embedding
+    litellm_params:
+      model: xinference/stella-mrl-large-zh-v3.5-1792d
+      litellm_credential_name: default_vllm_credential
+  - model_name: bge-large-zh-v1.5
+    model_info:
+      mode: embedding
+    litellm_params:
+      model: xinference/bge-large-zh-v1.5
+      litellm_credential_name: default_vllm_credential
+  - model_name: bge-m3
+    model_info:
+      mode: embedding
+    litellm_params:
+      model: xinference/bge-m3
+      litellm_credential_name: default_vllm_credential
+
+general_settings: 
+  master_key: sk-master-key
+  database_url: "postgresql://llmproxy:passwd@db:5432/litellm"
+  database_connection_pool_limit: 100
+  database_connection_timeout: 60
+
+credential_list:
+  - credential_name: default_vllm_credential
+    credential_values:
+      api_key: os.environ/VLLM_API_KEY
+      api_base: http://*.*.*.*:9999/v1
+    credential_info:
+      description: "vllm info"
+
+
+litellm_settings:
+  request_timeout: 600
+  budget_duration: 30d
+  max_parallel_requests: 200
+  input_cost_per_token: 0.00004
+  output_cost_per_token: 0.00012
