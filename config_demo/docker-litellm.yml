@@ -1,0 +1,31 @@
+name: litellm
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest # 或者选用 stable
+    volumes:
+     - ./config.yaml:/app/config.yaml
+     - /etc/localtime:/etc/localtime
+    command:
+     - "--config=/app/config.yaml/config.yaml"
+    ports:
+      - "9982:4000" # Map the container port to the host, change the host port if necessary
+    environment:
+        DATABASE_URL: "postgresql://llmproxy:passwd@db:5432/litellm"
+        STORE_MODEL_IN_DB: "True" # allows adding models to proxy via UI
+        VLLM_API_KEY: $VLLM_API_KEY
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: litellm
+      POSTGRES_USER: llmproxy
+      POSTGRES_PASSWORD: passwd
+    volumes:
+     - /etc/localtime:/etc/localtime
+    ports:
+      - "5432:5432" 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d litellm -U llmproxy"]
+      interval: 1s
+      timeout: 10s
+      retries: 10
