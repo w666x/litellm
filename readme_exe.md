@@ -8,7 +8,7 @@
 #### 仓库简介
 
 | git仓库 | 地址 | 主要功能 | star/fork数
-|:-|:-|:-|:-
+|-----|-----|-----|-----|
 | litellm |  [BerriAI/litellm](https://github.com/BerriAI/litellm.git) | 模型服务集成管理 | 28k/4k
 
 
@@ -20,6 +20,7 @@
     - 支持 **模型管理、api-key管理、请求并发设置、token吞吐量收费设置**
     - 详细的帮助文档，可参考[LiteLLM
 帮助文档](https://docs.litellm.com.cn/docs/providers/xinference#sample-usage---embedding)
+    - 回复【litellm】获取本文原文地址
 
 
 
